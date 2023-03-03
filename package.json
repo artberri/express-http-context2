@@ -13,9 +13,15 @@
 			"default": "./lib/cjs/index.js"
 		}
 	},
-	"engines" : {
-    "node" : ">=14.0.0"
-  },
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"files": [
+		"lib",
+		"src",
+		"CHANGELOG.md",
+		"LICENSE"
+	],
 	"scripts": {
 		"build": "pnpm run clean && pnpm run compile",
 		"clean": "rm -rf lib/ .nyc_output/ coverage/",
@@ -36,6 +42,7 @@
 	},
 	"keywords": [
 		"express",
+		"middleware",
 		"plugin",
 		"request",
 		"context",

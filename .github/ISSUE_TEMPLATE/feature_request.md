@@ -11,6 +11,9 @@ Be sure to follow the [Contributor Code of Conduct](https://github.com/artberri/
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is.
 
+**Is your feature request related to a use case that can not be solved with the current implementation? Please describe.**
+A clear and concise description of what the use case is.
+
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
 
