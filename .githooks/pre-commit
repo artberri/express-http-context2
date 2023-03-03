@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+pnpm run hook:pre-commit
+pnpm_precommit_exit_status=$?
+if [ $pnpm_precommit_exit_status -ne 0 ]; then
+    exit 1
+fi

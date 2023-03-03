@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "es2020",
+		"sourceMap": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"moduleResolution": "node",
+		"rootDirs": ["./src"],
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["src"]
+}

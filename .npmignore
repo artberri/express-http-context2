@@ -1,0 +1,5 @@
+.githooks/
+.github/
+.nyc_output/
+.vscode/
+test/
