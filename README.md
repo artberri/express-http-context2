@@ -20,6 +20,10 @@ yarn add express-http-context2
 pnpm add express-http-context2
 ```
 
+> **Requirements**
+>
+> `express-http-context2` is a middleware intended for `express`, so although it is not explicitly declared as a dependency or peer dependency, it requires `express` to work, as well as `@types/express` if you are using Typescript. The reason the dependency is not explicitly declared is that it could also eventually be used with `fastify` or other Node.js HTTP servers.
+
 ## Configuration
 
 Use the middleware immediately before the first middleware that needs to have access to the context. You won't have access to the context in any middleware "used" before this one.
@@ -69,7 +73,7 @@ function logError(error) {
 
 ### middleware
 
-Express.js middleware that is responsible for initializing the independent context for each request. The `get` and `set` calls will operate on a set of keys/values unique to those contexts.
+It is an Express.js middleware that is responsible for initializing the independent context for each request. The `get` and `set` calls will operate on a set of keys/values unique to those contexts.
 
 #### Example
 

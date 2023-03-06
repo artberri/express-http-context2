@@ -6,7 +6,11 @@ const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>()
 /**
  * Express.js middleware that is responsible for initializing the context for each request.
  */
-export function middleware(_: Request, __: Response, next: NextFunction): void {
+export function middleware(
+	req: Request,
+	res: Response,
+	next: NextFunction
+): void {
 	asyncLocalStorage.run(new Map(), () => next())
 }
 
