@@ -70,7 +70,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "^17.4.4",
 		"@commitlint/config-conventional": "^17.4.4",
-		"@oliverlockwood/express-http-context-intermediate-library": "0.0.1",
+		"@oliverlockwood/express-http-context-intermediate-library": "0.0.3",
 		"@types/express": "^4.17.17",
 		"@types/node": "^18.14.6",
 		"@types/supertest": "^2.0.12",

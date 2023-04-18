@@ -1,4 +1,4 @@
-import { init, REQUEST_ID_CONTEXT_KEY } from '@oliverlockwood/express-http-context-intermediate-library'
+import { init, REQUEST_ID_CONTEXT_KEY, REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME } from '@oliverlockwood/express-http-context-intermediate-library'
 import express, { Express, Request, Response } from 'express'
 import supertest from 'supertest'
 import tap from 'tap'
@@ -195,7 +195,8 @@ void tap.test(
 			set('value', req.query['value'])
 
 			res.status(200).json({
-				value: get<number>('value'),
+				value: req.query['value'],
+				valueFromContext: get<number>('value'),
 				requestId: get<string>(REQUEST_ID_CONTEXT_KEY)
 			})
 		}))
@@ -206,12 +207,35 @@ void tap.test(
 			request.get('/').query({ value: 'value2' }),
 		])
 
+		console.log(response1.body);
+		console.log(response1.headers);
+		console.log(response2.body);
+		console.log(response2.headers);
+
 		t.strictSame(response1.body.value, 'value1')
 		t.strictSame(response2.body.value, 'value2')
-		t.type(response1.body.requestId, "string")
-		t.strictSame(response1.body.requestId.length, 5)
-		t.type(response2.body.requestId, "string")
-		t.strictSame(response2.body.requestId.length, 5)
+
+		t.type(response1.header[REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME], "string")
+		t.strictSame(response1.header[REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME].length, 21)
+		t.type(response2.header[REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME], "string")
+		t.strictSame(response2.header[REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME].length, 21)
+
+		// This is the specific example I had flagged in the Github issue - where
+		// setting something into the httpContext in a common library, but it's
+		// unusable from within the application code.
+		t.strictSame(response1.body.requestId, response1.header[REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME])
+		t.strictSame(response2.body.requestId, response2.header[REQUEST_ID_IN_RESPONSE_HTTP_HEADER_NAME])
+
+		// These operations also fail, I suspect, because neither of the set/get
+		// functions are usable, because the directly imported AsyncLocalStorage has
+		// not been initialised by a call to `app.use(middleware)` within our code
+		// here.  Effectively this is another manifestation of the same bug -
+		// showing that although the middleware *has* already been initialised in
+		// Express request handler chain, it is not usable because the
+		// AsyncLocalStorage context is not identical for all usages of the
+		// `express-http-context2` library code.
+		t.strictSame(response1.body.valueFromContext, 'value1')
+		t.strictSame(response2.body.valueFromContext, 'value2')
 	}
 )
 
