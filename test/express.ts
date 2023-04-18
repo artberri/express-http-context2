@@ -1,3 +1,4 @@
+import { init, REQUEST_ID_CONTEXT_KEY } from '@oliverlockwood/express-http-context-intermediate-library'
 import express, { Express, Request, Response } from 'express'
 import supertest from 'supertest'
 import tap from 'tap'
@@ -178,6 +179,39 @@ void tap.test(
 
 		t.strictSame(response1.body.value, 'value5')
 		t.strictSame(response2.body.value, 'value6')
+	}
+)
+
+void tap.test(
+	'maintains unique value when the library is depended upon both directly and transitively',
+	async (t) => {
+		const app = express()
+
+		// this function in the test library does app.use(middleware) and
+		// httpContext.set(REQUEST_ID_CONTEXT_KEY, <a unique id>)
+		init(app)
+
+		app.get('/', ((req, res) => {
+			set('value', req.query['value'])
+
+			res.status(200).json({
+				value: get<number>('value'),
+				requestId: get<string>(REQUEST_ID_CONTEXT_KEY)
+			})
+		}))
+
+		const request = supertest(app)
+		const [response1, response2] = await Promise.all([
+			request.get('/').query({ value: 'value1' }),
+			request.get('/').query({ value: 'value2' }),
+		])
+
+		t.strictSame(response1.body.value, 'value1')
+		t.strictSame(response2.body.value, 'value2')
+		t.type(response1.body.requestId, "string")
+		t.strictSame(response1.body.requestId.length, 5)
+		t.type(response2.body.requestId, "string")
+		t.strictSame(response2.body.requestId.length, 5)
 	}
 )
 
