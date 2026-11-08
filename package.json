@@ -2,19 +2,32 @@
 	"name": "express-http-context2",
 	"version": "1.0.0",
 	"description": "Modern request-scoped storage support for Express.js based on Asynchronous Local Storage.",
-	"main": "lib/cjs/index.js",
-	"module": "lib/esm/index.js",
-	"typings": "lib/types/index.d.ts",
-	"exports": {
-		".": {
-			"types": "./lib/types/index.d.ts",
-			"import": "./lib/esm/index.js",
-			"require": "./lib/cjs/index.js",
-			"default": "./lib/cjs/index.js"
-		}
+	"keywords": [
+		"asynchronous-local-storage",
+		"asynchronouslocalstorage",
+		"context",
+		"express",
+		"express-http-context",
+		"express-request-context",
+		"http-context",
+		"middleware",
+		"plugin",
+		"request",
+		"request-context"
+	],
+	"homepage": "https://github.com/artberri/express-http-context2#readme",
+	"bugs": {
+		"url": "https://github.com/artberri/express-http-context2/issues"
 	},
-	"engines": {
-		"node": ">=14.0.0"
+	"license": "MIT",
+	"author": {
+		"name": "Alberto Varela",
+		"email": "hello@albertovarela.net",
+		"url": "https://www.albertovarela.net"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/artberri/express-http-context2.git"
 	},
 	"files": [
 		"lib",
@@ -22,70 +35,54 @@
 		"CHANGELOG.md",
 		"LICENSE"
 	],
+	"type": "module",
+	"main": "./lib/index.cjs",
+	"module": "./lib/index.mjs",
+	"types": "./lib/index.d.cts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./lib/index.d.mts",
+				"default": "./lib/index.mjs"
+			},
+			"require": {
+				"types": "./lib/index.d.cts",
+				"default": "./lib/index.cjs"
+			}
+		},
+		"./package.json": "./package.json"
+	},
 	"scripts": {
-		"build": "pnpm run clean && pnpm run compile",
-		"clean": "rm -rf lib/ .nyc_output/ coverage/",
-		"compile": "concurrently \"pnpm run compile:cjs\" \"pnpm run compile:esm\" \"pnpm run compile:types\" && ./scripts/fixup.sh",
-		"compile:cjs": "tsc -p tsconfig.cjs.json",
-		"compile:esm": "tsc -p tsconfig.esm.json",
-		"compile:types": "tsc -p tsconfig.types.json",
-		"coverage:html": "tap --coverage-report=html",
-		"coverage:cobertura": "tap --coverage-report=cobertura",
+		"build": "tsdown",
+		"clean": "rm -rf lib/ coverage/",
+		"format": "oxfmt",
+		"format:check": "oxfmt --check",
 		"hook:commit-msg": "commitlint -e",
 		"hook:pre-commit": "pnpm run qa",
-		"lint": "eslint .",
+		"lint": "oxlint --type-aware",
 		"prepack": "pnpm run qa && pnpm run build",
-		"qa": "pnpm run lint && pnpm run type-check && pnpm run test",
-		"test": "pnpm run clean && TS_NODE_PROJECT=tsconfig.json tap --node-arg=--require=ts-node/register",
-		"test:watch": "TS_NODE_PROJECT=tsconfig.json tap --node-arg=--require=ts-node/register --watch",
-		"type-check": "tsc -p tsconfig.json --noEmit"
+		"qa": "pnpm run format:check && pnpm run lint && pnpm run type-check && pnpm run test",
+		"test": "node --test 'test/**/*.test.ts'",
+		"test:coverage": "mkdir -p coverage && node --test --experimental-test-coverage --test-coverage-include=src/** --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info 'test/**/*.test.ts'",
+		"test:watch": "node --test --watch 'test/**/*.test.ts'",
+		"type-check": "tsc"
 	},
-	"keywords": [
-		"express",
-		"middleware",
-		"plugin",
-		"request",
-		"context",
-		"http-context",
-		"request-context",
-		"express-http-context",
-		"express-request-context",
-		"asynchronouslocalstorage",
-		"asynchronous-local-storage"
-	],
-	"author": {
-		"name": "Alberto Varela",
-		"email": "hello@albertovarela.net",
-		"url": "https://www.albertovarela.net"
-	},
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/artberri/express-http-context2.git"
-	},
-	"bugs": {
-		"url": "https://github.com/artberri/express-http-context2/issues"
-	},
-	"homepage": "https://github.com/artberri/express-http-context2#readme",
 	"devDependencies": {
-		"@commitlint/cli": "^17.4.4",
-		"@commitlint/config-conventional": "^17.4.4",
-		"@types/express": "^4.17.17",
-		"@types/node": "^18.14.6",
-		"@types/supertest": "^2.0.12",
-		"@types/tap": "^15.0.8",
-		"@typescript-eslint/eslint-plugin": "^5.54.1",
-		"@typescript-eslint/parser": "^5.54.1",
-		"concurrently": "^7.6.0",
-		"eslint": "^8.35.0",
-		"eslint-config-prettier": "^8.7.0",
-		"eslint-plugin-import": "^2.27.5",
-		"express": "^4.18.2",
-		"prettier": "^2.8.4",
-		"supertest": "^6.3.3",
-		"tap": "^16.3.4",
-		"ts-node": "^10.9.1",
-		"typescript": "^4.9.5"
+		"@commitlint/cli": "^21.2.4",
+		"@commitlint/config-conventional": "^21.2.4",
+		"@types/express": "^5.0.6",
+		"@types/node": "^26.6.6",
+		"@types/supertest": "^7.2.1",
+		"express": "^5.3.0",
+		"oxfmt": "^0.77.0",
+		"oxlint": "^1.92.0",
+		"oxlint-tsgolint": "^7.0.2006",
+		"supertest": "^7.3.2",
+		"tsdown": "^0.23.7",
+		"typescript": "^7.0.2"
+	},
+	"engines": {
+		"node": ">=22.12.0"
 	},
 	"packageManager": "pnpm@12.18.0"
 }

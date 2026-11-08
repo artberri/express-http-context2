@@ -1,0 +1,27 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["eslint", "typescript", "import", "node", "oxc", "unicorn"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "error"
+	},
+	"env": {
+		"node": true,
+		"es2024": true
+	},
+	"ignorePatterns": ["lib/**", "coverage/**"],
+	"rules": {
+		"prefer-template": "error",
+		"object-shorthand": "error",
+		"no-shadow": "error",
+		"no-unused-vars": "error",
+		"no-unused-expressions": "error",
+		"typescript/no-floating-promises": "error",
+		"typescript/explicit-function-return-type": "error",
+		"typescript/explicit-member-accessibility": "error",
+		"typescript/prefer-readonly": "error",
+		"typescript/array-type": ["error", { "default": "array-simple" }],
+		"typescript/no-explicit-any": "off",
+		"typescript/no-unnecessary-type-parameters": "off"
+	}
+}

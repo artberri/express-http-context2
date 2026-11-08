@@ -32,8 +32,20 @@ Help is welcome and much appreciated, whether you are an experienced developer o
    git config core.hooksPath .githooks
    ```
 
-5. Install npm dependencies (PNPM should be used)
+5. Install the toolchain and dependencies. The Node.js and pnpm versions are
+   pinned in `.prototools`; with [proto](https://moonrepo.dev/proto) installed,
+   run:
 
    ```sh
+   proto use
    pnpm install --frozen-lockfile
    ```
+
+## Scripts
+
+- `pnpm run qa`: check formatting (oxfmt), lint (oxlint), type-check and test.
+  The pre-commit hook runs it.
+- `pnpm run format`: format the code with oxfmt.
+- `pnpm test`: run the tests with the Node.js test runner.
+- `pnpm run test:coverage`: run the tests with coverage (writes `coverage/lcov.info`).
+- `pnpm run build`: build the CommonJS and ESM bundles and types into `lib/` with tsdown.

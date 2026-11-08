@@ -1,4 +1,4 @@
-import { AsyncLocalStorage } from 'async_hooks'
+import { AsyncLocalStorage } from 'node:async_hooks'
 import type { NextFunction, Request, Response } from 'express'
 
 const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>()
@@ -9,7 +9,7 @@ const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>()
 export function middleware(
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ): void {
 	asyncLocalStorage.run(new Map(), () => next())
 }
@@ -32,4 +32,10 @@ export function set<T = any>(key: string, value: T): void {
 	asyncLocalStorage.getStore()?.set(key, value)
 }
 
-export default { get, middleware, set }
+const httpContext: {
+	get: typeof get
+	middleware: typeof middleware
+	set: typeof set
+} = { get, middleware, set }
+
+export default httpContext

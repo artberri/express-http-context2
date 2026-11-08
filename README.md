@@ -7,7 +7,7 @@
 
 Modern request-scoped storage support for Express.js, based on native Node.js Asynchronous Local Storage. It's a great place to store user state, claims from a JWT, request/correlation IDs, and any other request-scoped data.
 
-This package is a drop-in replacement and has been inspired by the work done in [express-http-context](https://github.com/skonves/express-http-context), but with ESM support, no dependencies, and only supporting modern versions of Node.js (+v14).
+This package is a drop-in replacement and has been inspired by the work done in [express-http-context](https://github.com/skonves/express-http-context), but with ESM support, no dependencies, and only supporting modern versions of Node.js (v22.12 or later).
 
 ## Installation
 
@@ -21,7 +21,7 @@ pnpm add express-http-context2
 
 > **Requirements**
 >
-> `express-http-context2` is a middleware intended for `express`, so although it is not explicitly declared as a dependency or peer dependency, it requires `express` to work, as well as `@types/express` if you are using Typescript. The reason the dependency is not explicitly declared is that it could also eventually be used with `fastify` or other Node.js HTTP servers.
+> `express-http-context2` is a middleware intended for `express`, so although it is not explicitly declared as a dependency or peer dependency, it requires `express` (v4 or v5) to work, as well as `@types/express` if you are using Typescript. The reason the dependency is not explicitly declared is that it could also eventually be used with `fastify` or other Node.js HTTP servers.
 
 ## Configuration
 

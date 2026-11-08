@@ -1,19 +1,24 @@
 {
 	"compilerOptions": {
-		"target": "es2020",
-		"sourceMap": true,
+		"target": "es2023",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"lib": ["es2023"],
+		"types": ["node"],
 		"strict": true,
+		"noEmit": true,
+		"declaration": true,
+		"isolatedDeclarations": true,
+		"erasableSyntaxOnly": true,
+		"verbatimModuleSyntax": true,
+		"allowImportingTsExtensions": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": false,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedIndexedAccess": true,
 		"noPropertyAccessFromIndexSignature": true,
-		"moduleResolution": "node",
-		"rootDirs": ["./src"],
-		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": ["src"]
+	"include": ["src", "test", "tsdown.config.ts"]
 }
