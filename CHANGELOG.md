@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `lib/types`. Imports through the package entry point are unchanged.
 - Tested against Express 4 and 5.
 
+### Added
+
+- Published on JSR as `@artberri/express-http-context2`.
+
 ## [1.0.0] - 2023-03-06
 
 First stable version released after being tested in a production environment with intense traffic.

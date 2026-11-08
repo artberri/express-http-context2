@@ -19,6 +19,14 @@ yarn add express-http-context2
 pnpm add express-http-context2
 ```
 
+It is also published on [JSR](https://jsr.io/@artberri/express-http-context2) as `@artberri/express-http-context2`. Installed from there, import it from `@artberri/express-http-context2` instead of `express-http-context2`:
+
+```sh
+deno add jsr:@artberri/express-http-context2
+# or
+npx jsr add @artberri/express-http-context2
+```
+
 > **Requirements**
 >
 > `express-http-context2` is a middleware intended for `express`, so although it is not explicitly declared as a dependency or peer dependency, it requires `express` (v4 or v5) to work, as well as `@types/express` if you are using Typescript. The reason the dependency is not explicitly declared is that it could also eventually be used with `fastify` or other Node.js HTTP servers.

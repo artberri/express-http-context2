@@ -1,0 +1,13 @@
+{
+	"$schema": "https://jsr.io/schema/config-file.v1.json",
+	"name": "@artberri/express-http-context2",
+	"version": "1.0.0",
+	"license": "MIT",
+	"exports": "./src/index.ts",
+	"imports": {
+		"express": "npm:express@^5"
+	},
+	"publish": {
+		"include": ["src", "README.md", "LICENSE", "CHANGELOG.md"]
+	}
+}
