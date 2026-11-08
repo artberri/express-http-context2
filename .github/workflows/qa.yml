@@ -6,47 +6,48 @@ on:
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
+
 jobs:
-  build:
+  qa:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x, 19.x]
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v7
+      - name: Install Node.js and pnpm from .prototools
+        uses: moonrepo/setup-toolchain@v0
+        with:
+          auto-install: true
+      - run: pnpm install --frozen-lockfile
+      - name: Format, lint, type-check and test
+        run: pnpm run qa
+      - name: Build
+        run: pnpm run build
+      - name: Coverage
+        run: pnpm run test:coverage
+      - uses: codecov/codecov-action@v7
+        with:
+          files: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  test:
+    name: test (node ${{ matrix.node-version }}, express ${{ matrix.express }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22.x, 24.x, 26.x]
+        express: [4, 5]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: 'https://registry.npmjs.org'
-      - name: Install pnpm
-        id: pnpm-install
-        uses: pnpm/action-setup@v2
-        with:
-          version: '7.x'
-          run_install: false
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --strict-peer-dependencies
-      - name: Run QA
-        run: pnpm run qa
-      - name: Run coverage
-        run: pnpm run coverage:cobertura
-      - uses: codecov/codecov-action@v3
-        name: Upload coverage to codecov
-        with:
-          directory: ./coverage/
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Use Express ${{ matrix.express }}
+        if: matrix.express != 5
+        run: pnpm add --save-dev express@${{ matrix.express }} @types/express@${{ matrix.express }}
+      - run: pnpm test
