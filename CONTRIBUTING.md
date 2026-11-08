@@ -49,3 +49,21 @@ Help is welcome and much appreciated, whether you are an experienced developer o
 - `pnpm test`: run the tests with the Node.js test runner.
 - `pnpm run test:coverage`: run the tests with coverage (writes `coverage/lcov.info`).
 - `pnpm run build`: build the CommonJS and ESM bundles and types into `lib/` with tsdown.
+
+## Releasing
+
+1. Set the same `"version"` in `package.json` and `jsr.json`, and move the
+   `Unreleased` entries in `CHANGELOG.md` under the new version.
+2. Create a signed tag on that commit (`git tag -s vX.Y.Z -m "Version X.Y.Z"`),
+   push it, and create a GitHub release from it. Creating the release runs
+   `publish.yml`.
+3. The `npm` job runs QA and the build, then stages the version on npm. It goes
+   live only after a maintainer approves it with 2FA, on npmjs.com or with
+   `npm stage approve <stage-id>` (`npm stage list express-http-context2` shows
+   the id).
+4. The `jsr` job runs after the `npm` job succeeds and publishes
+   `@artberri/express-http-context2` immediately. JSR versions can't be deleted,
+   only yanked, so don't re-run it after a partial publish.
+
+Both registries authenticate through OIDC (trusted publishing), so the repo
+holds no npm or JSR token.
