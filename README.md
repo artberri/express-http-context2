@@ -1,6 +1,5 @@
 # Express HTTP Context 2
 
-[![Rate on Openbase](https://badges.openbase.com/js/rating/express-http-context2.svg)](https://openbase.com/js/express-http-context2?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](./CODE_OF_CONDUCT.md)
 [![MIT license](https://img.shields.io/npm/l/express-http-context2)](./LICENSE)
 [![Build status](https://github.com/artberri/express-http-context2/actions/workflows/qa.yml/badge.svg)](https://github.com/artberri/express-http-context2/actions/workflows/qa.yml)
