@@ -1,7 +1,37 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import type { NextFunction, Request, Response } from 'express'
 
-const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>()
+type Store = Map<string, any>
+
+// Several copies of this package can be loaded at once: the CommonJS and ESM
+// builds, or different versions required by an app and by its dependencies.
+// They all share one AsyncLocalStorage, registered globally, so a value set
+// through one copy can be read through any other.
+// See https://github.com/artberri/express-http-context2/issues/1
+const storageKey: unique symbol = Symbol.for('express-http-context2.storage')
+const requestStoreKey: unique symbol = Symbol.for('express-http-context2.store')
+
+const registry = globalThis as typeof globalThis & {
+	[storageKey]?: AsyncLocalStorage<Store>
+}
+const asyncLocalStorage: AsyncLocalStorage<Store> = (registry[storageKey] ??=
+	new AsyncLocalStorage<Store>())
+
+/**
+ * Returns the store of this request, creating it the first time.
+ * Keeping it on the request means that mounting the middleware more than
+ * once (for example by the app and by a library) keeps the values already set.
+ */
+function getRequestStore(req: Request): Store {
+	const request = req as Request & { [requestStoreKey]?: Store }
+	let store = request[requestStoreKey]
+	if (!store) {
+		store = new Map()
+		Object.defineProperty(request, requestStoreKey, { value: store })
+	}
+
+	return store
+}
 
 /**
  * Express.js middleware that is responsible for initializing the context for each request.
@@ -11,7 +41,7 @@ export function middleware(
 	res: Response,
 	next: NextFunction,
 ): void {
-	asyncLocalStorage.run(new Map(), () => next())
+	asyncLocalStorage.run(getRequestStore(req), () => next())
 }
 
 /**

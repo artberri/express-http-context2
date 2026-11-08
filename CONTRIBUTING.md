@@ -48,6 +48,7 @@ Help is welcome and much appreciated, whether you are an experienced developer o
 - `pnpm run format`: format the code with oxfmt.
 - `pnpm test`: run the tests with the Node.js test runner.
 - `pnpm run test:coverage`: run the tests with coverage (writes `coverage/lcov.info`).
+- `pnpm run test:build`: test the built package in `lib/` (run it after the build).
 - `pnpm run build`: build the CommonJS and ESM bundles and types into `lib/` with tsdown.
 
 ## Releasing

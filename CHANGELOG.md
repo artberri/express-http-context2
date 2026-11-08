@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Published on JSR as `@artberri/express-http-context2`.
 
+### Fixed
+
+- Share the context between all copies of the package loaded in a process
+  (the CommonJS and ESM builds, or different versions required by an app and
+  its dependencies), so a value set through one copy can be read through any
+  other ([#1](https://github.com/artberri/express-http-context2/issues/1)).
+- Keep the values already set when the middleware is mounted more than once for
+  the same request, for example by the app and by a library.
+
 ## [1.0.0] - 2023-03-06
 
 First stable version released after being tested in a production environment with intense traffic.

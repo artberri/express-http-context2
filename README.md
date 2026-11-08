@@ -48,6 +48,8 @@ app.use(httpContext.middleware)
 
 Note that some popular middlewares (such as `body-parser`, `express-jwt`) can cause the context to be lost. To work around such problems, it is recommended that you use any third-party middleware that does NOT require the context BEFORE using this middleware.
 
+The context is shared by every copy of `express-http-context2` loaded in the process: the CommonJS and ESM builds, and different versions installed for your app and for its dependencies. A library can mount the middleware and set values that your app reads with its own import, and mounting the middleware again for the same request keeps the values already set.
+
 ## Usage
 
 Examples of setting values:

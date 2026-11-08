@@ -60,11 +60,12 @@
 		"hook:commit-msg": "commitlint -e",
 		"hook:pre-commit": "pnpm run qa",
 		"lint": "oxlint --type-aware",
-		"prepack": "pnpm run qa && pnpm run build",
+		"prepack": "pnpm run qa && pnpm run build && pnpm run test:build",
 		"qa": "pnpm run format:check && pnpm run lint && pnpm run type-check && pnpm run test",
-		"test": "node --test 'test/**/*.test.ts'",
-		"test:coverage": "mkdir -p coverage && node --test --experimental-test-coverage --test-coverage-include=src/** --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info 'test/**/*.test.ts'",
-		"test:watch": "node --test --watch 'test/**/*.test.ts'",
+		"test": "node --test 'test/*.test.ts'",
+		"test:build": "node --test 'test/build/*.test.ts'",
+		"test:coverage": "mkdir -p coverage && node --test --experimental-test-coverage --test-coverage-include=src/** --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info 'test/*.test.ts'",
+		"test:watch": "node --test --watch 'test/*.test.ts'",
 		"type-check": "tsc"
 	},
 	"devDependencies": {
